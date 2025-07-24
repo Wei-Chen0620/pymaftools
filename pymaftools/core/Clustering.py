@@ -65,6 +65,7 @@ def k_fold_clustering_evaluation(table: PivotTable,
         sample_train = table.sample_metadata.iloc[train_idx].index
         table_train = table.subset(samples=sample_train)
         similarity_matrix = table_train.T.compute_similarity(method=metric)
+        similarity_matrix[np.isclose(similarity_matrix, 1, atol=1e-10)] = 1  # 確保數值在合理範圍
         distance_matrix_train = 1 - similarity_matrix # dist = 1 - similarity
         np.fill_diagonal(distance_matrix_train, 0)
 
